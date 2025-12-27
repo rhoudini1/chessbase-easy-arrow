@@ -136,7 +136,7 @@ public partial class App : System.Windows.Application
     {
         _notifyIcon = new NotifyIcon
         {
-            Icon = System.Drawing.SystemIcons.Application,
+            Icon = LoadIconFromResource("ChessEasyDraw.Resources.ChessEasyClickIcon.ico"),
             Visible = true,
             Text = "Right Click Modifier.\nCtrl+Shift active for right-click.\nRight-click to exit."
         };
@@ -144,7 +144,7 @@ public partial class App : System.Windows.Application
         var contextMenu = new ContextMenuStrip();
 
         // Item: Status
-        var statusItem = new ToolStripMenuItem("✓ Modificador Ativo");
+        var statusItem = new ToolStripMenuItem("✓ Active modifier");
         statusItem.Enabled = false;
         contextMenu.Items.Add(statusItem);
 
@@ -162,6 +162,37 @@ public partial class App : System.Windows.Application
 
         // Close on double click too
         _notifyIcon.DoubleClick += (s, e) => Current.Shutdown();
+    }
+
+    /// <summary>
+    /// Loads icon from assembly embedded resource.
+    /// </summary>
+    /// <param name="resourceName">Full resource name (namespace.folder.file)</param>
+    /// <returns>Loaded icon or standard icon if there's error</returns>
+    private System.Drawing.Icon LoadIconFromResource(string resourceName)
+    {
+        try
+        {
+            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+
+            using (var stream = assembly.GetManifestResourceStream(resourceName))
+            {
+                if (stream != null)
+                {
+                    return new System.Drawing.Icon(stream);
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine($"Icon not found: {resourceName}");
+                    return System.Drawing.SystemIcons.Application;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Failed to load icon: {ex.Message}");
+            return System.Drawing.SystemIcons.Application;
+        }
     }
 
     #endregion

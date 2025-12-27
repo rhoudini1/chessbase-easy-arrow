@@ -10,4 +10,12 @@
 	<ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Resources\ChessEasyClickIcon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\ChessEasyClickIcon.ico" />
+  </ItemGroup>
+
 </Project>
